@@ -1,0 +1,75 @@
+networks:
+  default:
+    driver: bridge
+    name: roboshop
+    external: true
+
+services:
+  mongodb:
+    image: shivanathbabu/mongodb:v1 
+    container_name: mongodb
+  catalogue:
+    image: shivanathbabu/catalogue:v1
+    container_name: catalogue
+    depends_on:
+    - mongodb
+  redis:
+    image: redis:7.0
+    container_name: redis
+  cart:
+    image: shivanathbabu/cart:v1
+    container_name: cart
+    depends_on:
+    - redis
+    - catalogue
+  mysql:
+    image: shivanathbabu/mysql:v1
+    container_name: mysql
+  user:
+    image: shivanathbabu/user:v1
+    conatiner_name: user
+    depends_on:
+    - redis
+    - mongodb
+  shipping:
+    image: shivanathbabu/shipping:v1
+    container_name: shipping
+    depens_on:
+    - cart
+    - mysql
+  rabbbitmq:
+    image: rabbitmq:3
+    container_name: rabbitmq
+    environment:
+      rabbitmq_user: roboshop
+      rabbitmq_password: roboshop123
+  payment:
+    image: shivanathbabu/payment:v1
+    container_name: payment
+    environment: 
+      CART_HOST: cart
+      CART_PORT: 8080 
+      USER_HOST: user 
+      USER_PORT: 8080
+      AMQP_HOST: rabbitmq
+      AMQP_USER: roboshop
+      AMQP_PASS:  roboshop123
+    depens_on:
+    - rabbitmq
+    - cart
+    - user
+  frontend:
+    image: shivanathbabu/frontend:v1 
+    container_name: frontend
+    ports:
+    - "80:80"
+    depends_on:
+    - catalogue
+    - user
+    - cart
+    - shipping
+    - payment
+
+
+  
+    

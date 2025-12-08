@@ -41,8 +41,8 @@ services:
     image: rabbitmq:3
     container_name: rabbitmq
     environment:
-      rabbitmq_user: roboshop
-      rabbitmq_password: roboshop123
+      RABBITMQ_DEFAULT_USER: roboshop
+      RABBITMQ_DEFAULT_PASS: roboshop123
   payment:
     image: shivanathbabu/payment:v1
     container_name: payment

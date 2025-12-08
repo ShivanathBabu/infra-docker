@@ -34,7 +34,7 @@ services:
   shipping:
     image: shivanathbabu/shipping:v1
     container_name: shipping
-    depens_on:
+    depends_on:
     - cart
     - mysql
   rabbbitmq:

@@ -27,7 +27,7 @@ services:
     container_name: mysql
   user:
     image: shivanathbabu/user:v1
-    conatiner_name: user
+    container_name: user
     depends_on:
     - redis
     - mongodb

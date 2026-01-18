@@ -9,6 +9,7 @@ RUN addgroup -S roboshop && adduser -S roboshop -G roboshop
 ENV REDIS_URL='redis://redis:6379' 
 ENV  MONGO_URL="mongodb://mongodb:27017/users"
 WORKDIR /opt/server
+USER roboshop
 COPY --from=builder /opt/server /opt/server
 CMD ["node", "server.js"]
 
